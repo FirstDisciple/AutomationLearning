@@ -1,5 +1,7 @@
-package com.gmail.vi160691vmv;
+package com.gmail.vi160691vmv.tests;
 
+import com.gmail.vi160691vmv.pages.LoginPage;
+import com.gmail.vi160691vmv.pages.MailBoxPage;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -23,18 +25,23 @@ public class FirstTest {
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.get("https://accounts.ukr.net/login?client_id=9GLooZH9KjbBlWnuLkVX");
     }
+
     @Test
-    public void userLogin() {
-        WebElement loginField = driver.findElement(By.id("id-l"));
-        loginField.sendKeys("myjustforfun");
-        WebElement passwordField = driver.findElement(By.id("id-p"));
-        passwordField.sendKeys("Am346115");
-        WebElement loginButton = driver.findElement(By.cssSelector(".form__submit"));
-        loginButton.click();
-        WebElement profileUser = driver.findElement(By.cssSelector(".login-button__user"));
-        String mailUser = profileUser.getText();
-        Assert.assertEquals("myjustforfun@ukr.net", mailUser);
+    public void userLogin1() {
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.editLoginField("myjustforfun");
+        loginPage.editPasswordField("Am346115");
+        loginPage.clickOnLoginButton();
+        Assert.assertEquals("myjustforfun@ukr.net", loginPage.getTitleText());
     }
+
+    @Test
+    public void userLogin2() {
+        MailBoxPage mailBoxPage = new MailBoxPage(driver);
+        mailBoxPage.clickWriteButton();
+    }
+
+
     @AfterClass
     public static void tearDown() {
         WebElement moreButton = driver.findElement(By.cssSelector(".login-button"));
